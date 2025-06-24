@@ -1,86 +1,150 @@
-# 💳 Headless Payments
+# 🧩 Headless Payments
 
-**Headless Payments** is an open-source, modular WordPress plugin for handling **PayPal payments via REST API**, purpose-built for **headless architectures** — such as React frontends paired with WordPress/Woocommerce backends.
+**Headless Payments** is a free and open-source WordPress plugin for handling payment flows via REST API — specifically designed to extend your custom checkout functionality in a **headless CMS architecture**.
 
-Currently supports **PayPal**, with a clean OOP structure, customizable gateway settings, and a frontend-agnostic design — making it ideal for **JAMstack-style** setups using WordPress as a headless CMS.
+Currently supporting **PayPal**, this plugin offers customizable gateway settings and a frontend-agnostic design — making it ideal for JAMstack-style setups that use WordPress as a headless CMS.
+
+Built with a clean and scalable OOP structure, Headless Payments gives developers full control over backend logic, reducing the friction of payment integration when WooCommerce’s default setup falls short in headless contexts.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
 - ✅ PayPal integration (Sandbox + Live)
-- ✅ Admin settings page with configurable credentials
-- ✅ Toggle gateways on/off via UI
-- ✅ Custom REST API endpoints for:
-  - Creating PayPal orders
-  - Capturing payments after approval
-- ✅ Cleanly namespaced, modular OOP structure
-- ✅ Ready for extension: Stripe, Square, etc.
-- ✅ React/Vite compatible (but backend-agnostic)
+- ⚙️ Admin settings page with configurable credentials
+- 🔘 Toggle gateways on/off via UI
+- 🔌 Custom REST API endpoints for:
+   - Creating PayPal orders
+   - Capturing payments after approval
+- 📦 Modular OOP structure (cleanly namespaced)
+- 🔧 Ready for extension: Stripe, Square, etc.
+- 💻 React/Vite compatible (but backend-agnostic)
 
 ---
 
-# 📦 Coming Soon
+## ⚡ Frontend Frameworks Supported
 
-Support for Stripe, Authorize.net, and Square.
-
-
-## 📦 Requirements
-
-- WordPress 6.x+
-- WooCommerce (optional)
-- PHP 7.4+
-- A headless frontend (React, Next.js, Vue, etc.)
-- Composer (for local development)
+- React JS
+- Vue JS
+- Next.js  
+*(Or any framework of your choice — the API is frontend-agnostic)*
 
 ---
 
-## 🛠 Installation
+## 📦 Installation
 
-1. Clone this repository or download the ZIP.
-2. Unzip the folder and
+1. **Requirements**
+    - WordPress 6.x+
+    - WooCommerce (optional, if you're using it as the eCommerce backend)
+    - PHP 7.4+
+    - A headless frontend (React, Next.js, Vue, etc.)
+    - Composer (for local development)
+    - A custom-built checkout page
 
-## 🔧 Setup
+2. **Install the Plugin**
+    - Clone this repository or download the ZIP
+    - Place the plugin folder (`headless-payments`) inside your `/wp-content/plugins/` directory
 
-1. **Activate the plugin**
+3. **Activate the Plugin**
+    - Log in to your WordPress dashboard
+    - Go to **Plugins → Installed Plugins**
+    - Activate **Headless Payments**
 
-   Go to your WordPress dashboard:
+4. **Configure Payment Settings**
+    - Navigate to **Headless Payments** in the WordPress admin sidebar
+    - Under the PayPal tab, fill in your sandbox/live credentials
 
-   - Navigate to **Plugins → Installed Plugins**
-   - Activate **Headless Payments**
+5. **Integrate with Frontend**
+    - In `/src/Api/PayPalController.php`, API routes are defined in `register_routes()`
+    - Use the following REST endpoints:
+       - `POST /wp-json/hp/v1/paypal/create-order`
+       - `POST /wp-json/hp/v1/paypal-capture-order`
 
-2. **Configure payment settings**
+    ### Sample Axios Integration
 
-   Once activated:
+    ```js
+    axios.post('http://your-website.com/wp-json/hp/v1/paypal/create-order', {
+       amount: cartData.amount,
+       currency: cartData.currency || 'USD'
+    })
+    .then(res => {
+       const { approval_url } = res.data;
+       if (approval_url) {
+          setApprovalUrl(approval_url);
+       } else {
+          setError('Failed to get approval URL.');
+       }
+    })
+    .catch(err => {
+       console.error(err);
+       setError('Failed to create PayPal order.');
+    })
+    .finally(() => setLoading(false));
+    ```
 
-   - Navigate to **Headless Payments** in the WordPress admin sidebar
-   - Configure the following fields under the **PayPal** tab:
+6. **Integrate with Your Frontend**
 
-     - **Mode**: Choose between `Sandbox` (test) or `Live` (production)
-     - **Client ID**: Your PayPal REST API client ID
-     - **Secret**: Your PayPal REST API secret
+    In the `/src/Api/PayPalController.php` file, API routes are declared in the `register_routes()` method.  
+    Use the following REST API endpoints in your frontend app:
 
-   Be sure to save your settings.
+    - `POST /wp-json/hp/v1/paypal/create-order`
+    - `POST /wp-json/hp/v1/paypal-capture-order`
 
-3. **Frontend Integration**
+    Here’s a sample React integration that shows how to:
 
-   Use the `/paypal/create-order` and `/paypal/capture-order` REST API endpoints in your frontend app (React, Vue, etc.) to handle checkout flow.
+    - Trigger PayPal order creation
+    - Redirect the user to PayPal for approval
+    - Bind the logic to a "Pay with PayPal" button
 
-   Example `.env.local` for frontend:
-   ```env
-   VITE_API_BASE_URL=http://your-site.test/wp-json/hp/v1
+    ```jsx
+    import axios from 'axios';
+    import React, { useState } from 'react';
 
-   ---
+    const Checkout = ({ cartData }) => {
+       const [approvalUrl, setApprovalUrl] = useState('');
+       const [error, setError] = useState('');
+       const [loading, setLoading] = useState(false);
+
+       const handlePayNow = () => {
+          setLoading(true);
+
+          axios.post('http://your-website.com/wp-json/hp/v1/paypal/create-order', {
+             amount: cartData.amount,
+             currency: cartData.currency || 'USD'
+          })
+          .then(res => {
+             const { approval_url } = res.data;
+             if (approval_url) {
+                setApprovalUrl(approval_url);
+                window.location.href = approval_url; // Redirect user to PayPal
+             } else {
+                setError('Failed to get approval URL.');
+             }
+          })
+          .catch(err => {
+             console.error(err);
+             setError('Failed to create PayPal order.');
+          })
+          .finally(() => setLoading(false));
+       };
+
+       return (
+          <button onClick={handlePayNow} disabled={loading}>
+             {loading ? 'Processing...' : 'Pay with PayPal'}
+          </button>
+       );
+    };
+    ```
+
+---
 
 ## ⚠️ Disclaimer
 
-This plugin is **experimental** and intended primarily for development, testing, and learning purposes. It has **not yet been tested in production environments**.
+This plugin is **experimental** and intended primarily for development, testing, and learning purposes.  
+It has **not yet been tested in production environments**.
 
-Use at your own risk. We strongly recommend thorough testing in a staging environment before deploying to a live site.
+> Use at your own risk. We strongly recommend thorough testing in a staging environment before deploying to a live site.
 
-Contributions, issues, and suggestions are welcome as we continue to improve stability, security, and extensibility.
+We strive to improve stability, security, and extensibility — contributions, issues, and suggestions are welcome!
 
-
-```bash
-wp-content/plugins/headless-payments/
-
+---
