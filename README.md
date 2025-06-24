@@ -1,10 +1,12 @@
 # 🧩 Headless Payments
 
-**Headless Payments** is a free and open-source WordPress plugin for handling payment flows via REST API — specifically designed to extend your custom checkout functionality in a **headless CMS architecture**.
+**Headless Payments** is a free and open-source Wordpress plugin for handling payment flow via REST API designed to extend your custom checkout functionality in a **headless CMS architecture**.
 
 Currently supporting **PayPal**, this plugin offers customizable gateway settings and a frontend-agnostic design — making it ideal for JAMstack-style setups that use WordPress as a headless CMS.
 
-Built with a clean and scalable OOP structure, Headless Payments gives developers full control over backend logic, reducing the friction of payment integration when WooCommerce’s default setup falls short in headless contexts.
+Headless Payments leverages a clean and scalable OOP structure allowing you to customize your backend logic according to your requirements. 
+
+One of the pain points in a headless CMS architecture is being limited from Woocommerce's core functionality. We strive to make payment integration less of a hassle allowing you to focus on things that matter the most.
 
 ---
 
@@ -35,7 +37,7 @@ Built with a clean and scalable OOP structure, Headless Payments gives developer
 
 1. **Requirements**
     - WordPress 6.x+
-    - WooCommerce (optional, if you're using it as the eCommerce backend)
+    - WooCommerce (optional, unless you're using it as the eCommerce backend)
     - PHP 7.4+
     - A headless frontend (React, Next.js, Vue, etc.)
     - Composer (for local development)
@@ -52,7 +54,7 @@ Built with a clean and scalable OOP structure, Headless Payments gives developer
 
 4. **Configure Payment Settings**
     - Navigate to **Headless Payments** in the WordPress admin sidebar
-    - Under the PayPal tab, fill in your sandbox/live credentials
+    - Under the tab of the gateway you intend to use, fill in your sandbox/live credentials (PayPal is currently supported)
 
 5. **Integrate with Frontend**
     - In `/src/Api/PayPalController.php`, API routes are defined in `register_routes()`
