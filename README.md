@@ -27,11 +27,11 @@ One of the pain points in a headless CMS architecture is being limited from Wooc
 
 ## Admin Dashboard
 
-![Admin Dashboard Preview](./headless-payments/assets/admin-dashboard.png)
+![Admin Dashboard Preview](./assets/admin-dashboard.png)
 
 ## Custom Checkout
 
-![Custom Checkout Flow](./headless-payments/assets/checkout.png)
+![Custom Checkout Flow](./assets/checkout.png)
 
 ## ⚡ Frontend Frameworks Supported
 
