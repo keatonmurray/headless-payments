@@ -25,6 +25,14 @@ One of the pain points in a headless CMS architecture is being limited from Wooc
 
 ---
 
+## Admin Dashboard
+
+![Admin Dashboard Preview](./headless-payments/assets/admin-dashboard.png)
+
+## Custom Checkout
+
+![Custom Checkout Flow](./headless-payments/assets/checkout.png)
+
 ## ⚡ Frontend Frameworks Supported
 
 - React JS
@@ -63,7 +71,7 @@ One of the pain points in a headless CMS architecture is being limited from Wooc
        - `POST /wp-json/hp/v1/paypal/create-order`
        - `POST /wp-json/hp/v1/paypal-capture-order`
 
-    ### Sample Axios Integration
+    ### Sample Axios Integration (PayPal)
 
     ```js
     axios.post('http://your-website.com/wp-json/hp/v1/paypal/create-order', {
