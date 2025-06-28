@@ -19,6 +19,7 @@ namespace HP;
 
 use HP\Admin\SettingsPage;
 use HP\API\PayPalController;
+use HP\API\StripeController;
 
 class Plugin {
     public function run() {
@@ -27,7 +28,10 @@ class Plugin {
             (new SettingsPage())->register();
         }
 
-        // REST API
-        (new PayPalController())->register_routes();
+         // REST API routes
+        add_action('rest_api_init', function () {
+            (new PayPalController())->register_routes();
+            (new StripeController())->register_routes();
+        });
     }
 }

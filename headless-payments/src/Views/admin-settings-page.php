@@ -45,7 +45,29 @@
         <!-- Stripe Config -->
         <div class="tab-content" data-tab-content="stripe" style="display:none;">
             <h2>Stripe</h2>
-            <p>Stripe settings coming soon...</p>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Enable Gateway</th>
+                    <td><input type="checkbox" name="hp_stripe_enabled" value="1" <?php checked(get_option('hp_stripe_enabled'), 1); ?> /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Mode</th>
+                    <td>
+                        <select name="hp_stripe_mode">
+                            <option value="sandbox" <?php selected(get_option('hp_stripe_mode'), 'sandbox'); ?>>Sandbox</option>
+                            <option value="live" <?php selected(get_option('hp_stripe_mode'), 'live'); ?>>Live</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Publishable Key</th>
+                    <td><input type="text" name="hp_stripe_publishable_key" value="<?php echo esc_attr(get_option('hp_stripe_publishable_key')); ?>" class="regular-text" /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Secret Key</th>
+                    <td><input type="password" name="hp_stripe_secret" value="<?php echo esc_attr(get_option('hp_stripe_secret')); ?>" class="regular-text" /></td>
+                </tr>
+            </table>
         </div>
 
         <!-- Square Config -->

@@ -1,18 +1,13 @@
 <?php
 
 /**
- * This files acts as an autoloader
+ * This file instantiates the Plugin class
+ * 
+ * The Plugin class is the base class responsible for initializing the plugin's functionality
+ * 
  */
 
-spl_autoload_register(function ($class) {
-    if (strpos($class, 'HP\\') === 0) {
-        $path = __DIR__ . '/../src/' . str_replace('\\', '/', substr($class, 3)) . '.php';
-        if (file_exists($path)) {
-            require_once $path;
-        }
-    }
-});
-
+// Loads the base plugin class
 add_action('plugins_loaded', function () {
     $plugin = new \HP\Plugin();
     $plugin->run();

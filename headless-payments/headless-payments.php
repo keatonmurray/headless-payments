@@ -5,10 +5,10 @@
  * Version: 1.0.0
  * Author: Keaton Murray
  * Text Domain: headless-payments
- * License: MIT License
  */
 
 defined('ABSPATH') || exit;
 define('HP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/bootstrap.php';

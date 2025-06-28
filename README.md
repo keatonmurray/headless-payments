@@ -2,7 +2,7 @@
 
 **Headless Payments** is a free and open-source Wordpress plugin for handling payment flow via REST API designed to extend your custom checkout functionality in a **headless CMS architecture**.
 
-Currently supporting **PayPal**, this plugin offers customizable gateway settings and a frontend-agnostic design — making it ideal for JAMstack-style setups that use WordPress as a headless CMS.
+Currently supporting **PayPal** and **Stripe**, this plugin offers customizable gateway settings and a frontend-agnostic design — making it ideal for JAMstack-style setups that use WordPress as a headless CMS.
 
 Headless Payments leverages a clean and scalable OOP structure allowing you to customize your backend logic according to your requirements. 
 
@@ -12,12 +12,13 @@ One of the pain points in a headless CMS architecture is being limited from Wooc
 
 ## ✨ Features
 
-- ✅ PayPal integration (Sandbox + Live)
+- ✅ PayPal & Stripe integration (Sandbox + Live)
 - ⚙️ Admin settings page with configurable credentials
 - 🔘 Toggle gateways on/off via UI
 - 🔌 Custom REST API endpoints for:
    - Creating PayPal orders
    - Capturing payments after approval
+   - Creating Stripe payment intents
 - 📦 Modular OOP structure (cleanly namespaced)
 - 🔧 Ready for extension: Stripe, Square, etc.
 - 💻 React/Vite compatible (but backend-agnostic)
@@ -54,7 +55,7 @@ One of the pain points in a headless CMS architecture is being limited from Wooc
 
 4. **Configure Payment Settings**
     - Navigate to **Headless Payments** in the WordPress admin sidebar
-    - Under the tab of the gateway you intend to use, fill in your sandbox/live credentials (PayPal is currently supported)
+    - Under the tab of the gateway you intend to use (PayPal or Stripe), fill in your sandbox/live credentials
 
 5. **Integrate with Frontend**
     - In `/src/Api/PayPalController.php`, API routes are defined in `register_routes()`
@@ -139,6 +140,74 @@ One of the pain points in a headless CMS architecture is being limited from Wooc
     ```
 
 ---
+
+### Stripe Integration
+
+In the `/src/Api/StripeController.php` file, API routes are declared in the `register_routes()` method.  
+Use the following REST API endpoint in your frontend app:
+
+- `POST /wp-json/hp/v1/stripe/create-payment-intent`
+
+Here’s a sample React integration using Stripe.js to:
+
+- Create a Stripe PaymentIntent
+- Use Stripe Elements to collect card info
+- Confirm payment via the client secret
+
+```jsx
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import axios from 'axios';
+
+const stripePromise = loadStripe('your-publishable-key');
+
+const StripeCheckout = ({ amount }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleStripePayment = async () => {
+    const card = elements.getElement(CardElement);
+    const { data } = await axios.post('http://your-website.com/wp-json/hp/v1/stripe/create-payment-intent', {
+      amount,
+      currency: 'USD'
+    });
+
+    const { error, paymentIntent } = await stripe.confirmCardPayment(data.client_secret, {
+      payment_method: {
+        card,
+        billing_details: { name: 'Jane Doe' }
+      }
+    });
+
+    if (error) {
+      console.error(error);
+    } else if (paymentIntent.status === 'succeeded') {
+      console.log('Payment successful!');
+    }
+  };
+
+  return (
+    <button onClick={handleStripePayment}>
+      Pay with Stripe
+    </button>
+  );
+};
+
+// Wrap in <Elements stripe={stripePromise}> in your app
+```
+---
+
+## 📝 Changelog
+
+### [v0.2.0] - 2025-06-28
+
+- ➕ Added Stripe integration (REST endpoint + admin settings)
+- 🛠️ Refactored API route registration for multi-gateway extensibility
+- 📚 Updated README documentation for Stripe usage
+
+### [v0.1.0] - 2025-06-10
+
+- 🎉 Initial release with PayPal support
 
 ## ⚠️ Disclaimer
 
