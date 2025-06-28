@@ -29,19 +29,17 @@ use WP_Error;
 class PayPalController {
     public function register_routes()
     {
-        add_action('rest_api_init', function () {
-            register_rest_route('hp/v1', '/paypal/create-order', [
-                'methods'  => 'POST',
-                'callback' => [$this, 'handle_create_order'],
-                'permission_callback' => '__return_true',
-            ]);
+        register_rest_route('hp/v1', '/paypal/create-order', [
+            'methods'  => 'POST',
+            'callback' => [$this, 'handle_create_order'],
+            'permission_callback' => '__return_true',
+        ]);
 
-            register_rest_route('hp/v1', '/paypal/capture-order', [
-                'methods'  => 'POST',
-                'callback' => [$this, 'handle_capture_order'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
+        register_rest_route('hp/v1', '/paypal/capture-order', [
+            'methods'  => 'POST',
+            'callback' => [$this, 'handle_capture_order'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     public function handle_create_order(WP_REST_Request $request) {
