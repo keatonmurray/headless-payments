@@ -208,23 +208,18 @@ const StripeCheckout = ({ amount }) => {
 
 ## 📝 Changelog
 
-### [v0.2.0] - 2025-06-28
+### [v1.2.0] - 2025-06-28
 
 - ➕ Added Stripe integration (REST endpoint + admin settings)
 - 🛠️ Refactored API route registration for multi-gateway extensibility
 - 📚 Updated README documentation for Stripe usage
 
-### [v0.1.0] - 2025-06-10
+### [v1.0.0] - 2025-06-10
 
 - 🎉 Initial release with PayPal support
 
-## ⚠️ Disclaimer
+## Thank You For Your Support
 
-This plugin is **experimental** and intended primarily for development, testing, and learning purposes.  
-It has **not yet been tested in production environments**.
-
-> Use at your own risk. We strongly recommend thorough testing in a staging environment before deploying to a live site.
-
-We strive to improve stability, security, and extensibility — contributions, issues, and suggestions are welcome!
+> We strive to improve stability, security, and extensibility — contributions, issues, and suggestions are welcome!
 
 ---
