@@ -208,15 +208,9 @@ const StripeCheckout = ({ amount }) => {
 
 ## 📝 Changelog
 
-### [v1.2.0] - 2025-06-28
-
-- ➕ Added Stripe integration (REST endpoint + admin settings)
-- 🛠️ Refactored API route registration for multi-gateway extensibility
-- 📚 Updated README documentation for Stripe usage
-
 ### [v1.0.0] - 2025-06-10
 
-- 🎉 Initial release with PayPal support
+- 🎉 Initial release with PayPal and Stripe support ((REST endpoint + admin settings))
 
 ## Thank You For Your Support
 
