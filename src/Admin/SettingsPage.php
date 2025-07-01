@@ -41,14 +41,26 @@ class SettingsPage {
 
     public function register_settings() {
         // PayPal
-        register_setting('hp_settings_group', 'hp_paypal_mode');
-        register_setting('hp_settings_group', 'hp_paypal_client_id');
-        register_setting('hp_settings_group', 'hp_paypal_secret');
-    
+        register_setting('hp_settings_group', 'hp_paypal_mode', [
+            'sanitize_callback' => 'sanitize_text_field'
+        ]);
+        register_setting('hp_settings_group', 'hp_paypal_client_id', [
+            'sanitize_callback' => 'sanitize_text_field'
+        ]);
+        register_setting('hp_settings_group', 'hp_paypal_secret', [
+            'sanitize_callback' => 'sanitize_text_field'
+        ]);
+
         // Stripe
-        register_setting('hp_settings_group', 'hp_stripe_mode');
-        register_setting('hp_settings_group', 'hp_stripe_publishable_key');
-        register_setting('hp_settings_group', 'hp_stripe_secret');
+        register_setting('hp_settings_group', 'hp_stripe_mode', [
+            'sanitize_callback' => 'sanitize_text_field'
+        ]);
+        register_setting('hp_settings_group', 'hp_stripe_publishable_key', [
+            'sanitize_callback' => 'sanitize_text_field'
+        ]);
+        register_setting('hp_settings_group', 'hp_stripe_secret', [
+            'sanitize_callback' => 'sanitize_text_field'
+        ]);
     }
 
     public function render_settings_page() {
